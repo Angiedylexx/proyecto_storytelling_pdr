@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="proyecto sobre el storytelling dinámico aplicado al e-commerce" />
+  <title>Adtrait | El Storytelling Dinámico</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header class="header">
+    <nav class="header-nav container-wide">
+      <a href="#" class="logo-marca">Adtrait</a>
+
+      <!-- boton hamburguesa para movil -->
+      <button id="mobile-menu-btn" class="mobile-btn">&#9776;</button>
+
+      <ul id="main-nav-list" class="nav-list">
+        <li><a href="#hero">Inicio</a></li>
+        <li><a href="#arquetipos">Arquetipos</a></li>
+        <li><a href="#conceptos">Conceptos</a></li>
+        <li><a href="#casos">Casos de Éxito</a></li>
+        <li><a href="#comunidad">Comunidad</a></li>
+        <li><a href="#conoceme" class="nav-link-destacado">Conóceme</a></li>
+      </ul>
+
+      <div id="header-cta" class="hidden">
+        <a href="#participa" class="btn btn-primary btn-pill">Participa con tu caso</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content">
+
+    <section id="hero" class="hero-section section-py container">
+      <div class="grid-12">
+
+        <div class="hero-content">
+          <h1 class="hero-title">
+            El Arte del
+            <span class="acento"> Storytelling</span>
+            Dinámico
+            en E-commerce
+          </h1>
+
+          <p class="hero-desc">
+            Descubre cómo las <strong class="resaltado">narrativas persuasivas</strong> transforman
+            visitantes en compradores y construyen marcas memorables en el comercio digital.
+          </p>
+        </div>
+
+        <div id="nucleo" class="nucleo-content">
+          <div class="bubble-card">
+            <p class="cita-nucleo">
+              En un mundo saturado de ruido digital, el <span class="acento negrita">Storytelling
+                Dinámico</span> es ingeniería de dopamina. Es el arte de insertar tu marca en el arco evolutivo de tu
+              cliente, transformando cada transacción en una <span class="acento negrita">experiencia de
+                identidad</span>.
+            </p>
+          </div>
+        </div>
+
+        <div class="btn-group btn-group-hero">
+          <a href="#casos" class="btn btn-primary">Ver Casos de Éxito</a>
+          <a href="#participa" class="btn btn-outline">Déjanos tu experiencia</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- arquetipos de marca -->
+    <section id="arquetipos" class="section-py container bg-white seccion-centrada">
+      <header class="encabezado-seccion">
+        <h2 class="titulo-seccion">Arquetipos de Marca</h2>
+        <p class="desc-seccion">Nuestra narrativa se ancla en figuras universales que resuenan en
+          el subconsciente del consumidor.</p>
+      </header>
+
+      <div id="arquetipos-grid" class="grid-arquetipos"></div>
+    </section>
+
+    <section id="conceptos" class="section-py container bg-surface">
+      <h2 class="titulo-seccion centrado">
+        ¿Por qué <span class="acento">funciona</span> el Storytelling?
+      </h2>
+
+      <div class="casos-grid">
+        <article class="concept-card">
+          <div class="icono-concepto" aria-hidden="true"></div>
+          <h3 class="titulo-tarjeta">Conexión Emocional</h3>
+          <p class="texto-tarjeta">
+            Las historias activan la oxitocina en el cerebro, generando empatía hacia la marca. El cliente no compra
+            solo datos, compra una experiencia.
+          </p>
+        </article>
+
+        <article class="concept-card">
+          <div class="icono-concepto" aria-hidden="true"></div>
+          <h3 class="titulo-tarjeta">Narrativa Persuasiva</h3>
+          <p class="texto-tarjeta">
+            Un arco narrativo claro (problema → solución → transformación) guía al usuario a través del embudo de
+            ventas de forma natural.
+          </p>
+        </article>
+
+        <article class="concept-card">
+          <div class="icono-concepto" aria-hidden="true"></div>
+          <h3 class="titulo-tarjeta">Retención y Lealtad</h3>
+          <p class="texto-tarjeta">
+            Los clientes recuerdan mejor la información presentada como historia que los datos fríos. La narrativa
+            fomenta la fidelidad.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- casos de exito -->
+    <section id="casos" class="section-py container bg-white">
+      <header class="encabezado-seccion centrado">
+        <h2 class="titulo-seccion">Casos de Éxito</h2>
+      </header>
+
+      <div class="carousel-container">
+        <button id="btn-prev" type="button" class="carousel-btn">&#8249;</button>
+
+        <div id="carrusel-casos" class="carousel-track">
+          <article class="caso-card">
+            <div class="caso-img-box">
+              <img src="imagenes/casoexito_apple.png" alt="Campaña Apple - Think Different" loading="lazy">
+            </div>
+            <div class="caso-body">
+              <span class="categoria">Tecnología</span>
+              <h3 class="titulo-caso">Apple — "Think Different"</h3>
+              <p class="texto-caso">Vende la idea de ser un creativo rebelde, no solo hardware.</p>
+            </div>
+          </article>
+
+          <article class="caso-card">
+            <div class="caso-img-box">
+              <img src="imagenes/caso_exito_nike.webp" alt="Nike — Just Do It" loading="lazy">
+            </div>
+            <div class="caso-body">
+              <span class="categoria">Deporte</span>
+              <h3 class="titulo-caso">Nike — "Just Do It"</h3>
+              <p class="texto-caso">Narra la historia del atleta interior que todos llevamos dentro.</p>
+            </div>
+          </article>
+
+          <article class="caso-card">
+            <div class="caso-img-box">
+              <img src="imagenes/caso_exito_airbnb" alt="Airbnb — Belong Anywhere" loading="lazy">
+            </div>
+            <div class="caso-body">
+              <span class="categoria">Viajes</span>
+              <h3 class="titulo-caso">Airbnb — "Belong Anywhere"</h3>
+              <p class="texto-caso">Una historia global de comunidad y pertenencia en cada viaje.</p>
+            </div>
+          </article>
+        </div>
+
+        <button id="btn-next" type="button" class="carousel-btn">&#8250;</button>
+      </div>
+    </section>
+
+    <!-- formulario -->
+    <section id="participa" class="seccion-participa">
+      <div class="contenedor-form">
+        <div class="encabezado-seccion centrado">
+          <h2 class="titulo-seccion">Déjanos tu experiencia</h2>
+        </div>
+
+        <form id="frm-narrativa" novalidate class="form-container">
+          <div class="form-group">
+            <label for="inp-nombre" class="form-label">
+              Tu nombre completo <span class="acento">*</span>
+            </label>
+            <input id="inp-nombre" name="nombre" type="text" required placeholder="Ej: Angie Reyes"
+              class="form-input" />
+            <p id="err-nombre" class="error-campo hidden" role="alert"></p>
+          </div>
+
+          <div class="form-group">
+            <label for="inp-narrativa" class="form-label">
+              Sugerencia de narrativa <span class="acento">*</span>
+            </label>
+            <textarea id="inp-narrativa" name="narrativa" rows="4" required
+              placeholder="Describe cómo aplicarías el storytelling y lo has aplicado en tu marca o empresa..."
+              class="form-input" style="resize: none;"></textarea>
+            <p id="err-narrativa" class="error-campo hidden" role="alert"></p>
+          </div>
+
+          <button type="submit" id="btn-enviar" class="btn btn-primary btn-enviar">
+            <span id="btn-texto">Publicar</span>
+            <span id="btn-spinner" class="hidden texto-cargando">cargando...</span>
+          </button>
+
+          <div id="msg-global" class="hidden" role="status"></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- comunidad -->
+    <section id="comunidad" class="section-py container-wide bg-surface border-y">
+      <div class="seccion-centrada">
+        <header class="encabezado-seccion">
+          <h2 class="titulo-grande">¿Qué sigue ahora? Hacer comunidad</h2>
+        </header>
+        <div class="bubble-card burbuja-comunidad">
+          <p class="texto-comunidad">
+            El Storytelling Dinámico no es lineal, es un viaje emocional que guía al usuario desde la
+            <strong class="acento negrita">Atracción Sensorial (ToFU)</strong>, donde capturamos
+            atención con curiosidad, hasta la <strong class="acento negrita">Lealtad Tribal (BoFU)</strong>,
+            donde el cliente se convierte en parte de la marca. Síguenos en:
+            <a href="https://www.linkedin.com/public-profile/settings?trk=d_flagship3_profile_self_view_public_profile"
+              target="_blank" rel="noopener noreferrer" class="redes-sociales-link">
+              Redes Sociales
+            </a>
+          </p>
+          <div class="pasos-funnel">
+            <span>Atracción</span>
+            <span>→</span>
+            <span>Aspiración</span>
+            <span>→</span>
+            <span>Lealtad</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- comentarios -->
+    <section class="section-py container">
+      <div class="contenedor-lista">
+        <h2 class="titulo-seccion centrado">Comunidad AdTrait</h2>
+        <div id="lista-narrativas" class="narrativas-list">
+          <p id="estado-carga" class="texto-carga">Cargando narrativas...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- sobre mi -->
+    <section id="conoceme" class="section-py container bg-white border-b">
+      <div class="contenedor-central">
+        <header class="encabezado-seccion">
+          <span class="etiqueta-seccion">Autoría</span>
+        </header>
+
+        <div class="badge-container">
+          <div class="badge-wrapper">
+            <div class="LI-profile-badge" data-locale="es_ES" data-size="medium" data-theme="light" data-type="VERTICAL"
+              data-vanity="carolina-reyes-developer" data-version="v1">
+              <a class="LI-simple-link"
+                href="https://co.linkedin.com/in/carolina-reyes-developer?trk=profile-badge">Carolina Reyes</a>
+            </div>
+          </div>
+
+          <p class="bio-texto">
+            Desarrolladora backend apasionada por el Storytelling Dinámico y Estrategia UX para E-commerce.
+            Conecta conmigo para potenciar el arco evolutivo de tu cliente.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://platform.linkedin.com/badger-js/sdk.js" async defer type="text/javascript"></script>
+
+  <!-- pop up al publicar -->
+  <div id="toast-success" class="toast-popup" role="alert">
+    <span class="toast-icon">✨</span>
+    <h3 class="titulo-toast">¡Experiencia Publicada!</h3>
+    <p class="texto-toast">
+      Tu experiencia ha sido integrada a la comunidad de Adtrait con éxito. Te invitamos a seguirnos en nuestras redes
+      sociales.
+    </p>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2026 · Adtrait · Desarrollo web (Uniasturias)</p>
+    <p class="pie-nombre">Angie Carolina Reyes.</p>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+
+</html>
