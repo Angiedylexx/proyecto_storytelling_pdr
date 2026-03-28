@@ -3,7 +3,7 @@
   --color-secundario: #6d28d9;
   --color-acento: #5fd4ac;
   --color-texto: #1e293b;
-  --color-gris: #64748b;
+  --color-gris: #475569;
   --color-fondo: #f8fafc;
   --blanco: #ffffff;
   --borde: #e2e8f0;
@@ -59,8 +59,15 @@ button {
 }
 
 .section-py {
-  padding-top: 60px;
-  padding-bottom: 60px;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+@media (min-width: 768px) {
+  .section-py {
+    padding-top: 120px;
+    padding-bottom: 120px;
+  }
 }
 
 .hidden {
@@ -258,13 +265,15 @@ button {
   font-size: 28px;
   font-weight: bold;
   color: var(--color-texto);
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .desc-seccion {
   color: var(--color-gris);
   max-width: 600px;
   margin: 0 auto;
+  font-size: 18px;
+  line-height: 1.6;
 }
 
 .centrado {
@@ -528,7 +537,7 @@ button {
 }
 
 .error-campo {
-  color: #ef4444;
+  color: #dc2626;
   font-size: 12px;
   margin-top: 5px;
 }

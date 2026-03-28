@@ -81,10 +81,10 @@ if (botonMenu && menuPrincipal) {
 }
 
 const arquetiposData = [
-  { id: 'hero', titulo: 'El Héroe', desc: 'El triunfo sobre el caos.', frase: 'Desafía tus límites', imagen: 'imagenes/arquetipos/heroe.png' },
-  { id: 'sage', titulo: 'El Sabio', desc: 'La claridad en la duda.', frase: 'El conocimiento te libera', imagen: 'imagenes/arquetipos/sabio.webp' },
-  { id: 'rebel', titulo: 'El Rebelde', desc: 'La ruptura con lo establecido.', frase: 'Cuestiona las reglas', imagen: 'imagenes/arquetipos/valiente.jpeg' },
-  { id: 'creator', titulo: 'El Creativo', desc: 'La imaginación hecha realidad.', frase: 'Si puedes soñarlo, lo tienes', imagen: 'imagenes/arquetipos/creativo.avif' }
+  { id: 'hero', titulo: 'El Héroe', desc: 'El triunfo sobre el caos.', frase: 'Desafía tus límites', imagen: 'imagenes/arquetipos/heroe.png', alt: 'Ilustración simbólica del arquetipo del Héroe, representando fortaleza narrativa y la superación de grandes desafíos.' },
+  { id: 'sage', titulo: 'El Sabio', desc: 'La claridad en la duda.', frase: 'El conocimiento te libera', imagen: 'imagenes/arquetipos/sabio.webp', alt: 'Ilustración simbólica del arquetipo del Sabio, evocando la búsqueda analítica de la verdad y el conocimiento.' },
+  { id: 'rebel', titulo: 'El Rebelde', desc: 'La ruptura con lo establecido.', frase: 'Cuestiona las reglas', imagen: 'imagenes/arquetipos/valiente.jpeg', alt: 'Ilustración simbólica del arquetipo del Rebelde, destacando la disrupción, valentía y el cuestionamiento de las normas establecidas.' },
+  { id: 'creator', titulo: 'El Creativo', desc: 'La imaginación hecha realidad.', frase: 'Si puedes soñarlo, lo tienes', imagen: 'imagenes/arquetipos/creativo.avif', alt: 'Ilustración simbólica del arquetipo del Creativo, expresando la innovación desbordante y la materialización de nuevas realidades.' }
 ];
 
 function renderArquetipos() {
@@ -99,7 +99,7 @@ function renderArquetipos() {
 
     const img = document.createElement('img');
     img.src = item.imagen;
-    img.alt = `Representación de ${item.titulo}`;
+    img.alt = item.alt;
     img.loading = 'lazy';
 
     const overlay = document.createElement('div');
