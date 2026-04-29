@@ -20,9 +20,6 @@
     <nav class="header-nav container-wide">
       <a href="#" class="logo-marca">Adtrait</a>
 
-      <!-- boton hamburguesa para movil -->
-      <button id="mobile-menu-btn" class="mobile-btn">&#9776;</button>
-
       <ul id="main-nav-list" class="nav-list">
         <li><a href="#hero">Inicio</a></li>
         <li><a href="#arquetipos">Arquetipos</a></li>
@@ -32,8 +29,17 @@
         <li><a href="#conoceme" class="nav-link-destacado">Conóceme</a></li>
       </ul>
 
-      <div id="header-cta" class="hidden">
-        <a href="#participa" class="btn btn-primary btn-pill">Participa con tu caso</a>
+      <div class="header-right">
+        <div class="header-actions">
+          <div class="cart-indicator" id="cart-btn" role="button" aria-label="Ver carrito">
+            <span class="cart-icon">🛒</span>
+            <span id="cart-count" class="cart-count">0</span>
+          </div>
+          <a href="#participa" class="btn btn-primary btn-pill">Participa</a>
+        </div>
+        
+        <!-- boton hamburguesa para movil -->
+        <button id="mobile-menu-btn" class="mobile-btn">&#9776;</button>
       </div>
     </nav>
   </header>
@@ -204,6 +210,17 @@
 
           <div id="msg-global" class="hidden" role="status"></div>
         </form>
+      </div>
+    </section>
+
+    <section id="tienda" class="section-py container">
+      <header class="encabezado-seccion centrado">
+        <h2 class="titulo-seccion">Kits de Narrativa</h2>
+        <p class="desc-seccion">Herramientas diseñadas para potenciar tu Storytelling.</p>
+      </header>
+
+      <div id="shop-grid" class="shop-grid">
+        <!-- Rendered via script with Factory Pattern -->
       </div>
     </section>
 

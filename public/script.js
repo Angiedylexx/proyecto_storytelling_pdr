@@ -1,211 +1,296 @@
-const API_URL = '/api/comentarios';
-
-const formulario = document.getElementById('frm-narrativa');
-const inputNombre = document.getElementById('inp-nombre');
-const inputMensaje = document.getElementById('inp-narrativa');
-const errorNombre = document.getElementById('err-nombre');
-const errorMensaje = document.getElementById('err-narrativa');
-const botonEnviar = document.getElementById('btn-enviar');
-const botonTexto = document.getElementById('btn-texto');
-const botonCargando = document.getElementById('btn-spinner');
-const mensajeExito = document.getElementById('toast-success');
-const listaMensajes = document.getElementById('lista-narrativas');
-const estadoCarga = document.getElementById('estado-carga');
-const botonMenu = document.getElementById('mobile-menu-btn');
-const menuPrincipal = document.getElementById('main-nav-list');
-const contenedorArquetipos = document.getElementById('arquetipos-grid');
-
-function crearTarjetaMensaje(item) {
-  const article = document.createElement('article');
-  article.className = 'narrativa-item';
-
-  const fotoPerfil = document.createElement('div');
-  fotoPerfil.className = 'narrativa-avatar';
-  fotoPerfil.setAttribute('aria-hidden', 'true');
-  fotoPerfil.textContent = item.nombre[0].toUpperCase();
-
-  const content = document.createElement('div');
-  content.className = 'narrativa-content';
-
-  const header = document.createElement('div');
-  header.className = 'narrativa-header';
-
-  const author = document.createElement('p');
-  author.className = 'narrativa-author';
-  author.textContent = item.nombre;
-
-  const time = document.createElement('time');
-  time.className = 'narrativa-date';
-  time.setAttribute('datetime', item.fecha || '');
-  time.textContent = item.fecha || '';
-
-  const text = document.createElement('p');
-  text.className = 'narrativa-text';
-  text.textContent = item.narrativa || '';
-
-  header.append(author, time);
-  content.append(header, text);
-  article.append(fotoPerfil, content);
-
-  return article;
+/**
+ * ==========================================
+ * PATRÓN OBSERVER (Sujeto Base)
+ * ==========================================
+ */
+class Subject {
+  constructor() {
+    this.observers = [];
+  }
+  subscribe(observer) {
+    this.observers.push(observer);
+  }
+  notify(data) {
+    this.observers.forEach(obs => obs(data));
+  }
 }
+
+/**
+ * ==========================================
+ * PATRÓN SINGLETON + OBSERVER (Cart Manager)
+ * ==========================================
+ */
+class CartManager extends Subject {
+  static instance;
+  constructor() {
+    if (CartManager.instance) return CartManager.instance;
+    super();
+    this.items = [];
+    CartManager.instance = this;
+  }
+
+  addItem(product) {
+    this.items.push(product);
+    console.log(`[Singleton] Producto añadido: ${product.name}`);
+    this.notify(this.items);
+  }
+
+  getCount() {
+    return this.items.length;
+  }
+}
+
+const cart = new CartManager();
+
+/**
+ * ==========================================
+ * PATRÓN FACTORY (UI Factory)
+ * ==========================================
+ */
+class UIFactory {
+  static create(type, data) {
+    switch (type) {
+      case 'product':
+        return this.createProductCard(data);
+      case 'toast':
+        return this.createToast(data);
+      case 'narrative':
+        return this.createNarrativeCard(data);
+      default:
+        throw new Error(`Tipo de componente no soportado: ${type}`);
+    }
+  }
+
+  static createProductCard(product) {
+    const card = document.createElement('article');
+    card.className = 'product-card';
+    const priceFormatted = new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0
+    }).format(product.price);
+
+    card.innerHTML = `
+      <div class="product-img-wrapper">
+        <img src="${product.image}" alt="${product.name}" loading="lazy">
+        <span class="product-badge">${product.tag}</span>
+      </div>
+      <div class="product-info">
+        <p class="product-price">${priceFormatted}</p>
+        <h3 class="product-title">${product.name}</h3>
+        <p class="product-desc">${product.desc}</p>
+        <button class="btn btn-primary btn-add-cart" data-id="${product.id}">
+          Añadir al Carrito
+        </button>
+      </div>
+    `;
+    card.querySelector('.btn-add-cart').addEventListener('click', () => {
+      cart.addItem(product);
+      UIFactory.create('toast', { 
+        title: '¡Producto Añadido!', 
+        message: `${product.name} está listo para tu historia.` 
+      });
+    });
+    return card;
+  }
+
+  static createNarrativeCard(item) {
+    const article = document.createElement('article');
+    article.className = 'narrativa-item';
+    article.innerHTML = `
+      <div class="narrativa-avatar" aria-hidden="true">${item.nombre[0].toUpperCase()}</div>
+      <div class="narrativa-content">
+        <div class="narrativa-header">
+          <p class="narrativa-author">${item.nombre}</p>
+          <time class="narrativa-date">${item.fecha || ''}</time>
+        </div>
+        <p class="narrativa-text">${item.narrativa || ''}</p>
+      </div>
+    `;
+    return article;
+  }
+
+  static createToast({ title, message, isError = false }) {
+    const existing = document.getElementById('dynamic-toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.id = 'dynamic-toast';
+    toast.className = `toast-popup active ${isError ? 'toast-error' : ''}`;
+    toast.innerHTML = `
+      <span class="toast-icon">${isError ? '❌' : '✨'}</span>
+      <h3 class="titulo-toast">${title}</h3>
+      <p class="texto-toast">${message}</p>
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.classList.remove('active'), 3500);
+    return toast;
+  }
+}
+
+// ==========================================
+// CONFIGURACIÓN Y ESTADO INICIAL
+// ==========================================
+
+const API_URL = '/api/comentarios';
+const elements = {
+  formulario: document.getElementById('frm-narrativa'),
+  inputNombre: document.getElementById('inp-nombre'),
+  inputMensaje: document.getElementById('inp-narrativa'),
+  errorNombre: document.getElementById('err-nombre'),
+  errorMensaje: document.getElementById('err-narrativa'),
+  botonEnviar: document.getElementById('btn-enviar'),
+  botonTexto: document.getElementById('btn-texto'),
+  botonCargando: document.getElementById('btn-spinner'),
+  listaMensajes: document.getElementById('lista-narrativas'),
+  estadoCarga: document.getElementById('estado-carga'),
+  botonMenu: document.getElementById('mobile-menu-btn'),
+  menuPrincipal: document.getElementById('main-nav-list'),
+  contenedorArquetipos: document.getElementById('arquetipos-grid'),
+  contenedorTienda: document.getElementById('shop-grid'),
+  cartCounter: document.getElementById('cart-count')
+};
+
+const productsData = [
+  { id: 1, name: 'Saga del Héroe', price: 189900, tag: 'Más Vendido', desc: 'Kit de plantillas y arquetipos para marcas que buscan inspirar valentía.', image: 'https://images.unsplash.com/photo-1519791883288-dc8bd696e667?auto=format&fit=crop&q=80&w=400' },
+  { id: 2, name: 'Oráculo del Sabio', price: 145000, tag: 'Novedad', desc: 'Herramientas analíticas para construir autoridad y confianza digital.', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=400' },
+  { id: 3, name: 'Manifiesto Rebelde', price: 120000, tag: 'Especial', desc: 'Guía de comunicación disruptiva para romper con lo establecido.', image: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=400' }
+];
+
+const arquetiposData = [
+  { id: 'hero', titulo: 'El Héroe', desc: 'El triunfo sobre el caos.', frase: 'Desafía tus límites', imagen: 'imagenes/arquetipos/heroe.png', alt: 'Hero' },
+  { id: 'sage', titulo: 'El Sabio', desc: 'La claridad en la duda.', frase: 'El conocimiento te libera', imagen: 'imagenes/arquetipos/sabio.webp', alt: 'Sage' },
+  { id: 'rebel', titulo: 'El Rebelde', desc: 'La ruptura con lo establecido.', frase: 'Cuestiona las reglas', imagen: 'imagenes/arquetipos/valiente.jpeg', alt: 'Rebel' },
+  { id: 'creator', titulo: 'El Creativo', desc: 'La imaginación hecha realidad.', frase: 'Si puedes soñarlo, lo tienes', imagen: 'imagenes/arquetipos/creativo.avif', alt: 'Creator' }
+];
+
+// ==========================================
+// INICIALIZACIÓN DE OBSERVADORES
+// ==========================================
+
+cart.subscribe((items) => {
+  if (elements.cartCounter) {
+    elements.cartCounter.textContent = items.length;
+    elements.cartCounter.style.transform = 'scale(1.2)';
+    setTimeout(() => elements.cartCounter.style.transform = 'scale(1)', 200);
+  }
+});
+
+// ==========================================
+// FUNCIONES DE CARGA Y RENDER
+// ==========================================
 
 async function cargarNarrativas() {
   try {
     const response = await fetch(API_URL);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
     const { data } = await response.json();
-
-    if (estadoCarga) estadoCarga.remove();
-
-    if (listaMensajes) {
+    if (elements.estadoCarga) elements.estadoCarga.remove();
+    if (elements.listaMensajes) {
       data.forEach(item => {
-        listaMensajes.appendChild(crearTarjetaMensaje(item));
+        elements.listaMensajes.appendChild(UIFactory.create('narrative', item));
       });
     }
   } catch (err) {
     console.error('Error al cargar:', err);
-    if (estadoCarga) {
-      estadoCarga.textContent = '⚠️ No se pudo conectar con la API.';
-    }
+    if (elements.estadoCarga) elements.estadoCarga.textContent = '⚠️ No se pudo conectar con la API.';
   }
 }
 
-if (botonMenu && menuPrincipal) {
-  botonMenu.addEventListener('click', () => {
-    const isExpanded = botonMenu.getAttribute('aria-expanded') === 'true';
-    botonMenu.setAttribute('aria-expanded', !isExpanded);
-    menuPrincipal.classList.toggle('hidden');
+function renderTienda() {
+  if (!elements.contenedorTienda) return;
+  productsData.forEach(p => {
+    elements.contenedorTienda.appendChild(UIFactory.create('product', p));
   });
 }
 
-const arquetiposData = [
-  { id: 'hero', titulo: 'El Héroe', desc: 'El triunfo sobre el caos.', frase: 'Desafía tus límites', imagen: 'imagenes/arquetipos/heroe.png', alt: 'Ilustración simbólica del arquetipo del Héroe, representando fortaleza narrativa y la superación de grandes desafíos.' },
-  { id: 'sage', titulo: 'El Sabio', desc: 'La claridad en la duda.', frase: 'El conocimiento te libera', imagen: 'imagenes/arquetipos/sabio.webp', alt: 'Ilustración simbólica del arquetipo del Sabio, evocando la búsqueda analítica de la verdad y el conocimiento.' },
-  { id: 'rebel', titulo: 'El Rebelde', desc: 'La ruptura con lo establecido.', frase: 'Cuestiona las reglas', imagen: 'imagenes/arquetipos/valiente.jpeg', alt: 'Ilustración simbólica del arquetipo del Rebelde, destacando la disrupción, valentía y el cuestionamiento de las normas establecidas.' },
-  { id: 'creator', titulo: 'El Creativo', desc: 'La imaginación hecha realidad.', frase: 'Si puedes soñarlo, lo tienes', imagen: 'imagenes/arquetipos/creativo.avif', alt: 'Ilustración simbólica del arquetipo del Creativo, expresando la innovación desbordante y la materialización de nuevas realidades.' }
-];
-
 function renderArquetipos() {
-  if (!contenedorArquetipos) return;
-
+  if (!elements.contenedorArquetipos) return;
   arquetiposData.forEach(item => {
     const card = document.createElement('div');
     card.className = 'arquetipo-card';
+    card.innerHTML = `
+      <div class="arquetipo-img-container">
+        <img src="${item.imagen}" alt="${item.alt}" loading="lazy">
+        <div class="arquetipo-overlay">
+          <p style="font-size: 0.75rem; margin-bottom: 0.5rem;">${item.desc}</p>
+          <span style="font-weight: 900; color: #5fd4ac; text-transform: uppercase; font-size: 0.875rem;">${item.frase}</span>
+        </div>
+      </div>
+      <h3 class="arquetipo-titulo">${item.titulo}</h3>
+    `;
+    elements.contenedorArquetipos.appendChild(card);
+  });
+}
 
-    const bubble = document.createElement('div');
-    bubble.className = 'arquetipo-img-container';
+// ==========================================
+// EVENT LISTENERS Y LÓGICA DE FORMULARIO
+// ==========================================
 
-    const img = document.createElement('img');
-    img.src = item.imagen;
-    img.alt = item.alt;
-    img.loading = 'lazy';
-
-    const overlay = document.createElement('div');
-    overlay.className = 'arquetipo-overlay';
-
-    const desc = document.createElement('p');
-    desc.style.cssText = 'font-size: 0.75rem; margin-bottom: 0.5rem;';
-    desc.textContent = item.desc;
-
-    const phrase = document.createElement('span');
-    phrase.style.cssText = 'font-weight: 900; color: #5fd4ac; text-transform: uppercase; font-size: 0.875rem;';
-    phrase.textContent = item.frase;
-
-    overlay.append(desc, phrase);
-    bubble.append(img, overlay);
-
-    const title = document.createElement('h3');
-    title.className = 'arquetipo-titulo';
-    title.textContent = item.titulo;
-
-    card.append(bubble, title);
-    contenedorArquetipos.appendChild(card);
+if (elements.botonMenu && elements.menuPrincipal) {
+  elements.botonMenu.addEventListener('click', () => {
+    const isExpanded = elements.botonMenu.getAttribute('aria-expanded') === 'true';
+    elements.botonMenu.setAttribute('aria-expanded', !isExpanded);
+    elements.menuPrincipal.classList.toggle('hidden');
+    elements.menuPrincipal.classList.toggle('active');
   });
 }
 
 const validarFormulario = () => {
   let isValid = true;
-
-  if (inputNombre.value.trim().length < 2) {
-    errorNombre.textContent = 'Ingresa un nombre válido (mín. 2 caracteres).';
-    errorNombre.classList.remove('hidden');
+  if (elements.inputNombre.value.trim().length < 2) {
+    elements.errorNombre.textContent = 'Ingresa un nombre válido.';
+    elements.errorNombre.classList.remove('hidden');
     isValid = false;
   } else {
-    errorNombre.classList.add('hidden');
+    elements.errorNombre.classList.add('hidden');
   }
-
-  if (inputMensaje.value.trim().length < 10) {
-    errorMensaje.textContent = 'La narrativa debe ser más descriptiva (mín. 10 caracteres).';
-    errorMensaje.classList.remove('hidden');
+  if (elements.inputMensaje.value.trim().length < 10) {
+    elements.errorMensaje.textContent = 'Mínimo 10 caracteres.';
+    elements.errorMensaje.classList.remove('hidden');
     isValid = false;
   } else {
-    errorMensaje.classList.add('hidden');
+    elements.errorMensaje.classList.add('hidden');
   }
-
   return isValid;
 };
 
-
-const setCargando = (status) => {
-  if (botonEnviar) botonEnviar.disabled = status;
-  if (botonTexto) botonTexto.textContent = status ? 'Publicando...' : 'Publicar Narrativa';
-  if (botonCargando) botonCargando.classList.toggle('hidden', !status);
-};
-
-if (formulario) {
-  formulario.addEventListener('submit', async (e) => {
+if (elements.formulario) {
+  elements.formulario.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!validarFormulario()) return;
 
-    setCargando(true);
-    const payload = {
-      nombre: inputNombre.value.trim(),
-      narrativa: inputMensaje.value.trim()
-    };
+    elements.botonEnviar.disabled = true;
+    elements.botonTexto.textContent = 'Publicando...';
 
     try {
       const res = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({
+          nombre: elements.inputNombre.value.trim(),
+          narrativa: elements.inputMensaje.value.trim()
+        })
       });
-
       const body = await res.json();
-      if (!res.ok) throw new Error(body.mensaje || 'Error en servidor');
+      if (!res.ok) throw new Error(body.mensaje || 'Error');
 
-      if (listaMensajes) {
-        const nuevaCard = crearTarjetaMensaje(body.data);
-        listaMensajes.prepend(nuevaCard);
+      if (elements.listaMensajes) {
+        elements.listaMensajes.prepend(UIFactory.create('narrative', body.data));
       }
-
-      formulario.reset();
-
-      if (mensajeExito) {
-        mensajeExito.classList.add('active');
-        setTimeout(() => {
-          mensajeExito.classList.remove('active');
-        }, 3500);
-      }
+      elements.formulario.reset();
+      UIFactory.create('toast', { title: '¡Éxito!', message: 'Tu historia ha sido publicada.' });
 
     } catch (err) {
-      alert(`❌ ${err.message}`);
+      UIFactory.create('toast', { title: 'Error', message: err.message, isError: true });
     } finally {
-      setCargando(false);
+      elements.botonEnviar.disabled = false;
+      elements.botonTexto.textContent = 'Publicar';
     }
   });
 }
 
-const carruselCasos = document.getElementById('carrusel-casos');
-const btnSliderPrev = document.getElementById('btn-prev');
-const btnSliderNext = document.getElementById('btn-next');
-
-if (carruselCasos && btnSliderPrev && btnSliderNext) {
-  const step = 324;
-  btnSliderPrev.addEventListener('click', () => carruselCasos.scrollBy({ left: -step, behavior: 'smooth' }));
-  btnSliderNext.addEventListener('click', () => carruselCasos.scrollBy({ left: step, behavior: 'smooth' }));
-}
-
+// Inicialización final
 renderArquetipos();
+renderTienda();
 cargarNarrativas();
